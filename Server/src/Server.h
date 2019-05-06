@@ -1,15 +1,19 @@
 #ifndef _SERVER_
 #define _SERVER_ 
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <netdb.h>
+#include <signal.h>
+
 
 class Server
 {
 	private:
 		int Socket;
 		int NewSocket;
-		int PortID;
+		//int PortID;
 	
-		char IP[INET6_ADDRSTRLEN];
+		char * ipAddress;
 	
 		struct addrinfo         SocketInfo;
 		struct addrinfo *       ServerInfo;
@@ -19,18 +23,20 @@ class Server
 
 		socklen_t SocketInSize;
 	public:
-		Server(int Port);
+		Server(char * IP);
+		//Server(int Port, unsigned char * IP);
 		~Server();
 		
 		void ServerStart();
-		int SetSocketOptions();
-		int Bind();
+		int  SetSocketOptions();
+		int  Bind();
 		int Listen();
-		int Connect();
-		int Clean();
+		int  Connect();
+		//int  Clean();
 
-		int * GetAddr(struct sockaddr * sa);
-}
+		static void sigchld_handler(int s);
+		//void * GetAddr(struct sockaddr * sa);
+};
 
 
 #endif
