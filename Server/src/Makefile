@@ -17,4 +17,4 @@ Server.o: Server.h
 
 clean:
 	rm -f $(bin_path)/*
-	rm -f $(obj_path)*.o
+	rm -f $(obj_path)/*.o
