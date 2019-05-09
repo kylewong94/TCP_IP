@@ -1,3 +1,2 @@
-# IRC_C
-Purpose: To write a C++ library to provide a server and client side communication 
-
+# TCP/IP
+Purpose: To wrap the C++ network library in to a reusable module for all projects. 
