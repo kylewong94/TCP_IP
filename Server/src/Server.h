@@ -5,7 +5,6 @@
 #include <netdb.h>
 #include <signal.h>
 
-
 class Server
 {
 	private:
@@ -26,7 +25,8 @@ class Server
 		Server(char * IP);
 		//Server(int Port, unsigned char * IP);
 		~Server();
-		
+	
+		void *GetAddr(struct sockaddr * sa);	
 		void ServerStart();
 		int  SetSocketOptions();
 		int  Bind();
@@ -35,7 +35,6 @@ class Server
 		//int  Clean();
 
 		static void sigchld_handler(int s);
-		//void * GetAddr(struct sockaddr * sa);
 };
 
 

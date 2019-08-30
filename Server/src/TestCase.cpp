@@ -3,7 +3,11 @@
 
 int main (void)
 {
-	char * ipAdd = "123.456.78";
+	char * ipAdd;
+	
+	ipAdd = new char [12];
+
+	ipAdd = "10.110.112.0";
 	Server ServerListenTest(ipAdd);
 	ServerListenTest.ServerStart();
 }

@@ -20,13 +20,12 @@ void Server::sigchld_handler(int s)
 		errno = saved_errno;
 	}
 
-void *GetAddr(struct sockaddr *sa)
+void * Server::GetAddr(struct sockaddr *sa)
 	{
 		if(sa->sa_family == AF_INET)
 		{
 			return &(((struct sockaddr_in*)sa)->sin_addr);
 		}
-		
 			return &(((struct sockaddr_in6*)sa)->sin6_addr);
 	}
 
@@ -49,6 +48,7 @@ Server::Server(char * IP)
 	if ((ErrorChecker = getaddrinfo(NULL, PortID, &SocketInfo, &ServerInfo)) != 0)
 	{
 		perror("Problem found in creation of socket, Program Exiting\n");
+		exit(-1);
 	} 
 	printf("Socket creation successful . . .\n");
 }
@@ -57,6 +57,7 @@ Server::~Server()
 {
 	delete [] ServerInfo;
 	delete [] BindHelper;
+	delete [] ipAddress;
 }
 
 void Server::ServerStart()
@@ -103,9 +104,9 @@ int Server::Bind()
 		fprintf(stderr, "Server: Failed to Bind\n");
 		exit(1);
 	}
-
-	printf("Bind successful . . .\n");
 	
+	printf("Bind successful . . .\n");
+	return 1;	
 }
 
 int Server::Listen()
@@ -134,12 +135,12 @@ int Server::Listen()
 			NewSocket = accept(Socket, (struct sockaddr *)&ClientInfo, &SocketInSize);
 			if(NewSocket == -1)
 			{
-				perror("Accepted Connection");
+				perror("Connection Status");
 				continue;
 			}
 			else
 			{
-				perror("Problem with connection");
+				perror("Connection Status");
 			}
 		}
   
@@ -152,10 +153,9 @@ int Server::Listen()
 			if(!fork())
 			{
 				close(Socket);
-				if(send(NewSocket, "Connection received from server", 13, 0) == -1)
-				{
-					perror("Could not transmit data . . . \n");
-				}
+				if(send(NewSocket, "Connection received from server", 30, 0) == -1)
+					perror("Status\n");
+				
 				close(NewSocket);
 				exit(0);
 			}
@@ -163,14 +163,4 @@ int Server::Listen()
 			return 0;
 		}
 	
-/*
-int Server::Clean()
-	{
-		int saved_errno = errno;
-
-		while(waitpid(-1, NULL, WNOHANG) > 0);
-	
-		errno = saved_errno;
-	}
-*/
 
