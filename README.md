@@ -29,6 +29,7 @@ struct addrinfo
 }
 ```
 [Man page for "struct sockaddr and struct sockaddr_in"](http://man7.org/linux/man-pages/man3/getaddrinfo.3.html)
+
 Summary: sockaddr is the generic socket descriptor for any type of socket operation
          sockaddr_in is the socket descriptor specifically for IP-based communication
 
@@ -62,6 +63,7 @@ struct in_addr
 
 **For iPv6 addresses**
 **struct sockaddr_in6**
+
 Summary: Same as sockaddr_in but larger storage for bigger address
 
 ```c++
