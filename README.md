@@ -1,11 +1,14 @@
 
-=# TCP/IP
-Purpose: To wrap the C++ network library in to a reusable module for all projects.
+# TCP/IP Module
+Note: This repository is meant for the creator's development of software engineering skills, please excuse possible errors or typos. This repo takes a lot of information from [Beej's Networking Guide](https://beej.us/guide/bgnet/) and the [Linux Man Pages](http://man7.org/linux/man-pages/) which can be followed through the hyperlink(s). This repo is also under construction as well so the README and software will be subject to change. 
 
 ## Table of Contents
 1. [Purpose]
-2. [Struct Guide]
+2. [Struct Guide (Note: For beginners and developer's reference)](#struct-exp)
 
+Purpose: A module for TCP/IP communication, can be used to be implemented in larger projects that require network communication
+
+<!-- (#struct-exp) -->
 ## Struct Explanation
 
 [Man page for "struct addrinfo"](http://man7.org/linux/man-pages/man3/getaddrinfo.3.html)
