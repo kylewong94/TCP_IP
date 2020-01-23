@@ -1,12 +1,28 @@
 
 # TCP/IP Module
+Purpose: A module for TCP/IP communication, can be used to be implemented in larger projects that require network communication
+
 Note: This repository is meant for the creator's development of software engineering skills, please excuse possible errors or typos. This repo takes a lot of information from [Beej's Networking Guide](https://beej.us/guide/bgnet/) and the [Linux Man Pages](http://man7.org/linux/man-pages/) which can be followed through the hyperlink(s). This repo is also under construction as well so the README and software will be subject to change. 
 
 ## Table of Contents
-1. [Purpose]
-2. [Struct Guide (Note: For beginners and developer's reference)](#struct-exp)
+1. [Installation]
+2. [Demos]
+3. [Struct Guide (Note: For beginners and developer's reference)](#struct-exp)
 
-Purpose: A module for TCP/IP communication, can be used to be implemented in larger projects that require network communication
+## Installation
+
+Open up your command line application and clone this repository
+
+```
+git clone https://github.com/kylewong94/TCP_IP.git
+```
+
+From here please take a look at the following DEMOs in order to get a hang of how the class is structured
+
+1. [Setting up the server for telnet communication]
+2. [Sending/Receiving datapackets]
+3. [Sending/Receiving Images]
+4. [Sending/Receiving Commands (Embedded)]
 
 <!-- (#struct-exp) -->
 ## Struct Explanation
