@@ -32,7 +32,8 @@ From here please take a look at the following DEMOs in order to get a hang of ho
 
 **struct addrinfo**
 
-Summary: This struct prepares the socket for continuous use
+This struct prepares the socket for continuous use
+
 [Man page for "struct addrinfo"](http://man7.org/linux/man-pages/man7/ip.7.html)
 
 ```c++
@@ -51,9 +52,10 @@ struct addrinfo
 ```
 
 **struct sockaddr and struct sockaddr_in**
+
 [Man page for "struct sockaddr and struct sockaddr_in"](http://man7.org/linux/man-pages/man7/ip.7.html)
 
-Summary: sockaddr is the generic socket descriptor for any type of socket operation sockaddr_in is the socket descriptor specifically for IP-based communication
+sockaddr is the generic socket descriptor for any type of socket operation sockaddr_in is the socket descriptor specifically for IP-based communication
 
 **struct sockaddr**
 
