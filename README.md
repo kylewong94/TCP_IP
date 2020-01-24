@@ -18,9 +18,16 @@ git clone https://github.com/kylewong94/TCP_IP.git
 ```
 From here please take a look at the following DEMOs in order to get a hang of how the class is structured
 
+
 [Setting up the server for telnet communication]
+
+
 [Sending/Receiving datapackets]
+
+
 [Sending/Receiving Images]
+
+
 [Sending/Receiving Commands (Embedded)]
 
 
