@@ -270,3 +270,26 @@ Assuming you already set up the addrinfo and the pointer addrinfo with the initi
 
 connect(ClientSocket, ptAddr->ai_addr, ptAddr->ai_addrlen);
 ```
+
+
+**listening**
+```c++
+int listen(int SocketFd, int BackLog);
+```
+
+Listen returns -1 if it fails
+
+Steps to get to listening
+1. getaddrinfo();
+2. socket();
+3. bind();
+4. listen();
+
+**accepting connections**
+```c++
+int accept(int sockfd, struct sockaddr * addr, socklen_t *addrlen);
+```
+
+```c++
+ConnectedSockets[Connections] = socket(ptAddr->ai_family, (struct sockaddr *)&inc_addr, &addr_size);
+```
