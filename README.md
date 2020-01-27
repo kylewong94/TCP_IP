@@ -39,7 +39,9 @@ This demo checks if you have the proper requirements to run the other demos. The
 
 change to the directory /demos/lib-check/src/
 
-```cd /demos/lib-check/src```
+```sh
+cd /demos/lib-check/src
+```
 
 then type 
 
