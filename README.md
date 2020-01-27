@@ -30,6 +30,45 @@ From here please take a look at the following DEMOs in order to get a hang of ho
 
 [Sending/Receiving Commands (Embedded)]
 
+ 
+
+<!-- (#Setting up the server for telnet communication) -->
+## Telnet Communication Demo (Library Check)
+
+This demo checks if you have the proper requirements to run the other demos. The server will run waiting on a socket and the user will telnet to check all is working.
+
+change to the directory /demos/lib-check/src/
+
+```cd /demos/lib-check/src```
+
+then type 
+
+```make```
+
+Then run the demo by entering
+
+```cd ../bin```
+
+```sudo ./lib-check-demo 780```
+
+The current shell session will begin running a server listening on **port 780**.
+
+Open another shell session and type 
+
+```telnet hostname 780```
+
+Where hostname is your compute's hostname. 
+
+It can usually be located by your command line interface username@**hostname**
+
+Or you can enter the following in your terminal 
+
+```
+hostname
+```
+
+If you done all this correctly, on the terminal thats running the server will tell you that you have a new connection as well as a response back to the terminal running the telnet.
+
 
 <!-- (#dev-guide) -->
 ## Developer and Beginner's code reference
