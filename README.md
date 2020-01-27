@@ -37,7 +37,7 @@ From here please take a look at the following DEMOs in order to get a hang of ho
 
 This demo checks if you have the proper requirements to run the other demos. The server will run waiting on a socket and the user will telnet to check all is working.
 
-change to the directory /demos/lib-check/src/
+change to the directory by entering the following in to the shell session
 
 ```sh
 cd /demos/lib-check/src
@@ -45,19 +45,28 @@ cd /demos/lib-check/src
 
 then type 
 
-```make```
+
+```sh
+make
+```
 
 Then run the demo by entering
 
-```cd ../bin```
+```sh
+cd ../bin
+```
 
-```sudo ./lib-check-demo 780```
+```sh
+sudo ./lib-check-demo 780
+```
 
 The current shell session will begin running a server listening on **port 780**.
 
 Open another shell session and type 
 
-```telnet hostname 780```
+```sh
+telnet hostname 780
+```
 
 Where hostname is your compute's hostname. 
 
@@ -65,7 +74,7 @@ It can usually be located by your command line interface username@**hostname**
 
 Or you can enter the following in your terminal 
 
-```
+```sh
 hostname
 ```
 
