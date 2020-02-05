@@ -5,38 +5,33 @@
 #include <netdb.h>
 #include <signal.h>
 
+#define MAX_CONNECTIONS 10
 
+#define IPv4 0
+#define IPv6 1
+#define FREE 2
 ///////////////////////////////////////////////////////////////////////
 class Server
 {
-	private:
-		int Socket;
-		int NewSocket;
-		//int PortID;
-	
-		char * ipAddress;
-	
-		struct addrinfo         SocketInfo;
-		struct addrinfo *       ServerInfo;
-		struct addrinfo *       BindHelper;
-		struct sigaction        Cleaner;
-		struct sockaddr_storage ClientInfo;
+	protected:
+		int    HostSocket;
+		int    AddressType; // 0 for IPv4 | 1 for IPv6 | 2 for unspecified
 
-		socklen_t SocketInSize;
+		struct addrinfo 	HostAddr;
+		struct addrinfo *	ServInfo;
+		struct addrinfo *	ptAddr;
+
 	public:
-		Server(char * IP);
-		//Server(int Port, unsigned char * IP);
-		~Server();
-	
-		void *GetAddr(struct sockaddr * sa);	
-		void ServerStart();
-		int  SetSocketOptions();
-		int  Bind();
-		int Listen();
-		int  Connect();
-		//int  Clean();
+		int   BackLog;    //Max Queue
+		int   MaxClients; //Maximum Clients allowed for this server
+		int * ClientSockets; //Stores Socket for Clients
+		int   ConnectedClients = 0;
 
-		static void sigchld_handler(int s);
+
+		Server(int MaxClient, int BackLog, char * PortNumber);
+		~Server();
+		int   ServerStart();
+
 };
 ///////////////////////////////////////////////////////////////////////
 

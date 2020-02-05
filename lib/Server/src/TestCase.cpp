@@ -3,11 +3,11 @@
 
 int main (void)
 {
-	char * ipAdd;
+	char * PortNumber;
 	
-	ipAdd = new char [12];
+	PortNumber = new char [4];
+	PortNumber = "780";
 
-	ipAdd = "10.110.112.0";
-	Server ServerListenTest(ipAdd);
+	Server ServerListenTest(5, 10, PortNumber);
 	ServerListenTest.ServerStart();
 }
