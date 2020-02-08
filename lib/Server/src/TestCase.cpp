@@ -6,7 +6,7 @@ int main (void)
 	char * PortNumber;
 	
 	PortNumber = new char [4];
-	PortNumber = "780";
+	PortNumber = "1025";
 
 	Server ServerListenTest(5, 10, PortNumber);
 	ServerListenTest.ServerStart();

@@ -14,6 +14,7 @@
 Server::Server(int MaxClient, int BckLg, char * PortNumber)
 {
 	int Err = 0;
+	int REUSEPORT = 1;
 
 	BackLog = BckLg; 
 	MaxClients = MaxClient;
@@ -38,21 +39,25 @@ Server::Server(int MaxClient, int BckLg, char * PortNumber)
 		printf("Setting Host Socket . . . \n");
 		if(((HostSocket = socket(ptAddr->ai_family, ptAddr->ai_socktype, ptAddr->ai_protocol))) == -1)
 		{
-			fprintf(stderr, "Server: socket error: %s \n", gai_strerror(HostSocket));
+			perror("server: socket");
 			continue;
 		}
+		
+		printf("Setting Socket Options \n");
+		if(setsockopt(HostSocket, SOL_SOCKET, SO_REUSEADDR, &REUSEPORT, sizeof(int)) == -1)
+		{
+			perror("setsockopt");
+			exit(1);
+		} 
 
 		printf("Binding Host Socket to Port . . .\n");
-		
-		bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_protocol);
-		/*
-		if((Err = bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_protocol)) == -1)
+		if(bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_addrlen) == -1)
 		{
 			close(HostSocket);
-			fprintf(stderr, "Server: bind error: %s \n", gai_strerror(Err));
+			perror("server: bind");
 			continue;
 		}
-		*/
+		
 		break;
 	}
 
@@ -72,6 +77,7 @@ Server::~Server()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 int Server::ServerStart()
 {
+	int ConnectingFD;
 	if (ptAddr == NULL)
 	{
 		fprintf(stderr, "Server: failed to bind \n");
@@ -80,9 +86,16 @@ int Server::ServerStart()
 	
 	printf("Server: Listening \n"); 
 
-	while(listen(HostSocket, BackLog) != 0)
+	if(listen(HostSocket, BackLog) == -1) 
 	{
-		ClientSockets[ConnectedClients] = accept(ptAddr->ai_family, NULL, NULL);
+		perror("listen");
+		exit(1);
+	}
+
+	while(1)
+	{
+		ConnectingFD = accept(HostSocket, NULL, NULL);
+		ClientSockets[ConnectedClients] = ConnectingFD;
 
 		if(ClientSockets[ConnectedClients] == -1)
 		{
@@ -95,12 +108,10 @@ int Server::ServerStart()
 			printf("Server: Client Connected");
 		}
 		
-		
-		
 		if (!fork())
 		{
 			close(HostSocket);
-			if (send(ClientSockets[ConnectedClients], "Hello World!", 13, 0) == -1)
+			if (send(ClientSockets[ConnectedClients-1], "Hello World!", 13, 0) == -1)
 			{
 				perror("Server: Send Error");
 			}
@@ -108,9 +119,8 @@ int Server::ServerStart()
 			close(ClientSockets[ConnectedClients]);
 			exit(0);
 		}
-		
+
 		close(ClientSockets[ConnectedClients]);
-		
 	}
 	
 	return 0;
