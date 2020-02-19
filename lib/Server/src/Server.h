@@ -7,9 +7,6 @@
 
 #define MAX_CONNECTIONS 10
 
-#define IPv4 0
-#define IPv6 1
-#define FREE 2
 ///////////////////////////////////////////////////////////////////////
 class Server
 {
@@ -31,8 +28,8 @@ class Server
 		Server(int MaxClient, int BackLog, char * PortNumber);
 		~Server();
 		int   ServerStart();
+		int   Receive();
 
 };
 ///////////////////////////////////////////////////////////////////////
-
 #endif
