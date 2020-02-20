@@ -19,7 +19,7 @@ class Client
 		int ERR_FLAG;
 		int RETURN_VAL;
 
-		Client(unsigned char * INET4, char * PortNum);
+		Client(char * INET4,char * PortNum, char * Hostname);
 		~Client();
 
 		int Connect();

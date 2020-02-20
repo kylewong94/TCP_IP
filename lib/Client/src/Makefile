@@ -1,4 +1,4 @@
-proj=IRC_Server
+proj=ClientTest
 
 obj_path=../obj
 bin_path=../bin
@@ -6,14 +6,14 @@ bin_path=../bin
 cxx=g++
 cflags= -Wall -g
 
-$(proj): TestCase.o Server.o
-	$(cxx) $(cflags) -o $(bin_path)/$(proj) $(obj_path)/TestCase.o $(obj_path)/Server.o
+$(proj): TestCase.o Client.o
+	$(cxx) $(cflags) -o $(bin_path)/$(proj) $(obj_path)/TestCase.o $(obj_path)/Client.o
 
-TestCase.o: TestCase.cpp Server.o
+TestCase.o: TestCase.cpp Client.o
 	$(cxx) $(cflags) -c TestCase.cpp -o $(obj_path)/TestCase.o
 
-Server.o: Server.h
-	$(cxx) $(cflags) -c Server.cpp -o $(obj_path)/Server.o
+Client.o: Client.h
+	$(cxx) $(cflags) -c Client.cpp -o $(obj_path)/Client.o
 
 clean:
 	rm -f $(bin_path)/*

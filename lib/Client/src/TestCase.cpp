@@ -1,13 +1,12 @@
-#include "Server.h"
+#include "Client.h"
 
 
 int main (void)
 {
-	char * PortNumber;
-	
-	PortNumber = new char [4];
-	PortNumber = "1025";
+	char IPv4 [] = "127.0.0.1";
+	char PortNumber [] = "1025";
+	char HostName  [] = "blackpearl";
 
-	Server ServerListenTest(5, 10, PortNumber);
-	ServerListenTest.ServerStart();
+	Client LocalTest(IPv4, PortNumber, HostName);	
+	LocalTest.Connect();
 }

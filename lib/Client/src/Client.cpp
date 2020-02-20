@@ -12,7 +12,7 @@
 
 
 /////////////////////////////////////////////////////////////////////////
-Client::Client(unsigned char * IPv4, unsigned char * PortNum, unsigned char * HostName)
+Client::Client(char * IPv4, char * PortNum, char * HostName)
 {
 	// Clearing and setting values in LocalAddr
 	memset(&LocalAddr, 0, sizeof LocalAddr);
@@ -22,7 +22,7 @@ Client::Client(unsigned char * IPv4, unsigned char * PortNum, unsigned char * Ho
 	//Setting Server info
 	if((RETURN_VAL = getaddrinfo(HostName, PortNum, &LocalAddr, &ServerInfo)) != 0)
 	{
-		fprintf(sdterr, "getaddrinfo: %s \n", gai_strerror(RETURN_VAL));
+		fprintf(stderr, "getaddrinfo: %s \n", gai_strerror(RETURN_VAL));
 	} 
 
 }
@@ -43,7 +43,7 @@ int Client::Connect()
 			continue;
 		}
 		
-		if(connect(LocalSocket, ptAddr->ai_addr, ptAddr->ai_addrlen) == -1)
+		if((connect(LocalSocket, ptAddr->ai_addr, ptAddr->ai_addrlen)) == -1)
 		{
 			close(LocalSocket);
 			perror("client: connect");

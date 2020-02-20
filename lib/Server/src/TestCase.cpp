@@ -3,11 +3,8 @@
 
 int main (void)
 {
-	char * PortNumber;
+	char PortNumber[] = "1025";
 	
-	PortNumber = new char [4];
-	PortNumber = "1025";
-
 	Server ServerListenTest(5, 10, PortNumber);
 	ServerListenTest.ServerStart();
 }
