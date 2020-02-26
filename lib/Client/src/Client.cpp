@@ -64,4 +64,13 @@ int Client::Connect()
 
 	return 0;
 }
+
+int Client::SendByte()//char * Data, int Len)
+{
+	while(send(LocalSocket, "Hello, world!", 13, 0) == -1);
+	close(LocalSocket);
+
+	return 0;
+		//perror("send");
+}
 /////////////////////////////////////////////////////////////////////////

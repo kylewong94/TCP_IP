@@ -23,7 +23,7 @@ class Client
 		~Client();
 
 		int Connect();
-		int Send();
+		int SendByte();
 };
 ///////////////////////////////////////////////////////////////////////
 
