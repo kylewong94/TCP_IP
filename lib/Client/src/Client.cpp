@@ -12,21 +12,13 @@
 
 
 /////////////////////////////////////////////////////////////////////////
-Client::Client(char * IPv4, char * PortNum, char * HostName)
+Client::Client(char * IPv4, char * PortNum)
 {
 	int Err;
 	// Clearing and setting values in LocalAddr
 	memset(&LocalAddr, 0, sizeof LocalAddr);
 	LocalAddr.ai_family   = AF_INET;
 	LocalAddr.ai_socktype = SOCK_STREAM;
-
-	struct in_addr IPv4_t;
-	if((Err = inet_aton(IPv4, &IPv4_t)) == 0)
-	{
-		printf("Could not convert IPv4 address to network bytes");
-		exit(-1);
-	}
-//	char * ipv4 = inet_ntoa(in);
 
 	//Setting Server info
 	if((RETURN_VAL = getaddrinfo(IPv4, PortNum, &LocalAddr, &ServerInfo)) != 0)
