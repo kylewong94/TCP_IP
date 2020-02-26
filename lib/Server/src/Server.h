@@ -19,17 +19,17 @@ class Server
 		struct addrinfo *	ptAddr;
 
 	public:
-		int   BackLog;    //Max Queue
-		int   MaxClients; //Maximum Clients allowed for this server
-		int * ClientSockets; //Stores Socket for Clients
-		int   ConnectedClients = 0;
+		const static int   BUFFERSIZE = 64;
+		char Buffer [BUFFERSIZE];
 
-
-		Server(int MaxClient, int BackLog, char * PortNumber);
+		int   ClientSocket;
+		
+		Server(char * PortNumber);
 		~Server();
 		int   ServerStart();
+		int   Accept();
 		int   Receive();
-
+		int   Send();	
 };
 ///////////////////////////////////////////////////////////////////////
 #endif
