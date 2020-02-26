@@ -11,16 +11,14 @@
 #include <netinet/ip.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-Server::Server(int MaxClient, int BckLg, char * PortNumber)
+Server::Server(char * PortNumber)
 {
 	int Err = 0;
 	int REUSEPORT = 1;
 
-	BackLog = BckLg; 
-	MaxClients = MaxClient;
 	ClientSockets = new int [MaxClient];
 	
-	memset(&HostAddr, 0,sizeof HostAddr);
+	memset(&HostAddr, 0, sizeof HostAddr);
 	HostAddr.ai_family   = AF_INET;
 	HostAddr.ai_socktype = SOCK_STREAM;
 	HostAddr.ai_flags    = AI_PASSIVE;
@@ -70,59 +68,58 @@ Server::Server(int MaxClient, int BckLg, char * PortNumber)
 Server::~Server()
 {
 	freeaddrinfo(ptAddr);
-	delete [] ClientSockets;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 int Server::ServerStart()
 {
-	int ConnectingFD;
 	if (ptAddr == NULL)
 	{
 		fprintf(stderr, "Server: failed to bind \n");
-		exit(1);
+		return -1;
 	}
 	
 	printf("Server: Listening \n"); 
 
-	if(listen(HostSocket, BackLog) == -1) 
+	if(listen(HostSocket, 1) == -1) 
 	{
 		perror("listen");
-		exit(1);
+		return -1;
 	}
 
-	while(1)
-	{
-		ConnectingFD = accept(HostSocket, NULL, NULL);
-		ClientSockets[ConnectedClients] = ConnectingFD;
-
-		if(ClientSockets[ConnectedClients] == -1)
-		{
-			printf("Server: Could not connect client");
-			continue;
-		}
-		else
-		{
-			ConnectedClients++;		
-			printf("Server: Client Connected");
-		}
-		
-		if (!fork())
-		{
-			close(HostSocket);
-			if (send(ClientSockets[ConnectedClients-1], "Hello World!", 13, 0) == -1)
-			{
-				perror("Server: Send Error");
-			}
-			
-			close(ClientSockets[ConnectedClients]);
-			exit(0);
-		}
-
-		close(ClientSockets[ConnectedClients]);
-	}
-	
+	Accept();
+	Receive();	
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+int Server::Accept()
+{
+	ClientSocket = accept(HostSocket, NULL, NULL)) == -1);
+	printf("Client is connected \n");
+	
+	return 0;
+	
+	
+//	return 0;
+	
+}
+int Server::Receive()
+{
+	printf("Receiving State . . . \n");
+	int RecvFlag; 	
+	
+	if((RecvFlag = recv(ClientSocket , Buffer, BUFFERSIZE-1, 0)) == -1)
+	{
+		perror("recv");
+		return -1;
+	}
+ 
+	printf("%s \n", Buffer);
+	return 0;
+}
+
+int Server::Send()
+{
+	return 0;
+}
