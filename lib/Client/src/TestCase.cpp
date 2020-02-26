@@ -3,7 +3,7 @@
 
 int main (void)
 {
-	char IPv4 [] = "127.0.0.1";
+	char IPv4 [] = "172.20.10.10";
 	char PortNumber [] = "1025";
 	char HostName  [] = "blackpearl";
 
