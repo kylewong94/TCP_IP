@@ -16,8 +16,6 @@ Server::Server(char * PortNumber)
 	int Err = 0;
 	int REUSEPORT = 1;
 
-	ClientSockets = new int [MaxClient];
-	
 	memset(&HostAddr, 0, sizeof HostAddr);
 	HostAddr.ai_family   = AF_INET;
 	HostAddr.ai_socktype = SOCK_STREAM;
@@ -95,7 +93,12 @@ int Server::ServerStart()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 int Server::Accept()
 {
-	ClientSocket = accept(HostSocket, NULL, NULL)) == -1);
+	
+	if((ClientSocket = accept(HostSocket, NULL, NULL)) == -1)
+	{
+		printf("Client could not connect");
+		return -1;
+	}
 	printf("Client is connected \n");
 	
 	return 0;

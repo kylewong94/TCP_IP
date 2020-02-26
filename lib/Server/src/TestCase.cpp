@@ -5,6 +5,6 @@ int main (void)
 {
 	char PortNumber[] = "1025";
 	
-	Server ServerListenTest(5, 10, PortNumber);
+	Server ServerListenTest(PortNumber);
 	ServerListenTest.ServerStart();
 }
