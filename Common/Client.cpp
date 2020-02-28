@@ -20,7 +20,7 @@ Client::Client(char * IPv4, char * PortNum)
 	LocalAddr.ai_socktype = SOCK_STREAM;
 
 	//Setting Server info
-	if((RETURN_VAL = getaddrinfo(IPv4, PortNum, &LocalAddr, &ServerInfo)) != 0)
+	if((RETURN_VAL = getaddrinfo(IPv4, PortNum, &LocalAddr, &ptAddr)) != 0)
 	{
 		fprintf(stderr, "getaddrinfo: %s \n", gai_strerror(RETURN_VAL));
 	} 
@@ -34,8 +34,14 @@ Client::~Client()
 /////////////////////////////////////////////////////////////////////////
 int Client::Connect()
 {
+	if(ptAddr == NULL)
+	{
+		fprintf(stderr, "client failed to connected \n");
+		return -1;
+	}
+
 	//Setting socket
-	for(ptAddr = ServerInfo; ptAddr != NULL; ptAddr = ptAddr->ai_next)
+	while (ptAddr != NULL)
 	{
 		if((LocalSocket = socket(ptAddr->ai_family, ptAddr->ai_socktype, ptAddr->ai_protocol)) == -1)
 		{
@@ -50,16 +56,10 @@ int Client::Connect()
 			continue;
 		}
 		
-		break;
+		ptAddr = ptAddr->ai_next;
 	}
 
-	if(ptAddr == NULL)
-	{
-		fprintf(stderr, "client failed to connected \n");
-		return -1;
-	}
-
-	freeaddrinfo(ServerInfo);
+	freeaddrinfo(ptAddr);
 
 	return 0;
 }
