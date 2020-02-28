@@ -1,12 +1,14 @@
 proj=GPSDemoServer
 
-#root=../..
+root= ../../../
 obj_path=../obj
 bin_path=../bin
-baseclass=../../lib/Server/src
+lib_path=$(root)/Common/lib
+
+libs= libnetcomm.a 
 
 cxx=g++
-cflags= -Wall -g -I$(baseclass) 
+cflags= -Wall -g -I 
 
 $(proj): TestCase.o DemoServer.o
 	$(cxx) $(cflags) -o $(bin_path)/$(proj) $(obj_path)/TestCase.o $(obj_path)/DemoServer.o
