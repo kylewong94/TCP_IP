@@ -14,7 +14,7 @@ clean:
 	rm $(obj_path)/*.o
 
 $(lib_path)/libnetcomm.a: $(objs)
-	ar rcs $(lib)/libnetcomm.a $(objs) 
+	ar rcs $(lib_path)/libnetcomm.a $(objs) 
 
 $(obj_path)/Client.o: Client.cpp Client.h
 	$(cxx) $(cflags) -c Client.cpp -o $(obj_path)/Client.o

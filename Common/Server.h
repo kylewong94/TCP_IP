@@ -1,11 +1,9 @@
-#ifndef _SERVER_
-#define _SERVER_ 
+#pragma once
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netdb.h>
 #include <signal.h>
-
-#define MAX_CONNECTIONS 10
 
 ///////////////////////////////////////////////////////////////////////
 class Server
@@ -32,4 +30,3 @@ class Server
 		int   Send();	
 };
 ///////////////////////////////////////////////////////////////////////
-#endif
