@@ -12,7 +12,6 @@ class Client
 		int    LocalSocket;
 		
 		struct addrinfo 	LocalAddr;
-		struct addrinfo *	ServerInfo;
 		struct addrinfo *	ptAddr;
 
 	public:
