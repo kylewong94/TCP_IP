@@ -3,9 +3,8 @@
 
 int main (void)
 {
-	char IPv4 [] = "192.168.137.7";
-	char PortNumber [] = "1025";
-	char HostName  [] = "blackpearl";
+	char IPv4 [] = "71.92.199.189";
+	char PortNumber [] = "25565";
 
 	Client LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();

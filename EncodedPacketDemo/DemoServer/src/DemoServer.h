@@ -5,6 +5,8 @@
 class DemoServer : public Server
 {
 	public:
+		DemoServer(char * PortNumber);
+		~DemoServer();		
 		int WriteToFile();
 }
 ///////////////////////////////////////////////////

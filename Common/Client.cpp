@@ -14,7 +14,6 @@
 /////////////////////////////////////////////////////////////////////////
 Client::Client(char * IPv4, char * PortNum)
 {
-	int Err;
 	// Clearing and setting values in LocalAddr
 	memset(&LocalAddr, 0, sizeof LocalAddr);
 	LocalAddr.ai_family   = AF_INET;
@@ -71,6 +70,5 @@ int Client::SendByte()//char * Data, int Len)
 	close(LocalSocket);
 
 	return 0;
-		//perror("send");
 }
 /////////////////////////////////////////////////////////////////////////

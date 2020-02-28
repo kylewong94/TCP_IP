@@ -103,9 +103,6 @@ int Server::Accept()
 	
 	return 0;
 	
-	
-//	return 0;
-	
 }
 int Server::Receive()
 {
