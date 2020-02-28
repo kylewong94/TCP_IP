@@ -1,5 +1,5 @@
-#ifndef _SERVER_
-#define _SERVER_ 
+#pragma once
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netdb.h>
@@ -9,7 +9,7 @@
 class Client
 {
 	protected:
-		int    LocalSocket;
+		int    			LocalSocket;
 		
 		struct addrinfo 	LocalAddr;
 		struct addrinfo *	ptAddr;
@@ -26,4 +26,3 @@ class Client
 };
 ///////////////////////////////////////////////////////////////////////
 
-#endif
