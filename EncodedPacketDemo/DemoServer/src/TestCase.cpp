@@ -4,7 +4,6 @@
 int main (void)
 {
 	char PortNumber[] = "1025";
-	char IPv4 []      = "192.168.1.1";	
-	Server ServerListenTest(PortNumber);
+	DemoServer ServerListenTest(PortNumber);
 	ServerListenTest.ServerStart();
 }

@@ -5,8 +5,9 @@
 
 
 /////////////////////////////////////////////
-DemoServer::DemoServer(char * PortNumber) : Server (PortNumber)
+DemoServer::DemoServer(char * PortNumber) : Server (PortNum)
 {
+	PortNum = PortNumber;
 }
 /////////////////////////////////////////////
 
