@@ -15,8 +15,7 @@ class GPSDataServer : public Server
 		//int Accept();
 		int ReceiveGPSData();
 		//int SendData();
-		int WriteToFile();
-		
+		int ReceiveAndWriteGPSDataToFile(char * Filename);
 };
 ///////////////////////////////////////////////////
 
