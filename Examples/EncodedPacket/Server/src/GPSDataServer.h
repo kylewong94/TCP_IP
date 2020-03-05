@@ -4,13 +4,17 @@
 ///////////////////////////////////////////////////
 class GPSDataServer : public Server
 {
+	private:
+		const static int		BufferSize = 64;
+		int			 			GPSDataBuffer[BufferSize];
+
 	public:
 		GPSDataServer(char * PortNum); 
 		~GPSDataServer();		
 		
 		//int Accept();
-		//int Receive();
-		int SendData();
+		int ReceiveGPSData();
+		//int SendData();
 		int WriteToFile();
 		
 };

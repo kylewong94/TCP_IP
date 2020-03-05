@@ -6,13 +6,29 @@
 /////////////////////////////////////////////
 GPSDataServer::GPSDataServer(char * PortNumber) : Server(PortNumber)
 {
-	//printf("This shit is ass");
 }
 /////////////////////////////////////////////
 
 /////////////////////////////////////////////
 GPSDataServer::~GPSDataServer()
 {	
+}
+/////////////////////////////////////////////
+
+/////////////////////////////////////////////
+int GPSDataServer::ReceiveGPSData()
+{
+	int DataLen = Receive(GPSDataBuffer, BufferSize);
+	if(DataLen == -1)
+	{
+	}
+
+	for(int i = 0; i < DataLen; i++)
+	{
+		printf("%d \t", GPSDataBuffer[i]);
+	}
+	
+	return DataLen;
 }
 /////////////////////////////////////////////
 
