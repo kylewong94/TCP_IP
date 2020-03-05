@@ -12,24 +12,15 @@
 
 
 /////////////////////////////////////////////////////////////////////////
-Client::Client(char * IPv4, char * PortNum, char * HostName)
+Client::Client(char * IPv4, char * PortNum)
 {
-	int Err;
 	// Clearing and setting values in LocalAddr
 	memset(&LocalAddr, 0, sizeof LocalAddr);
 	LocalAddr.ai_family   = AF_INET;
 	LocalAddr.ai_socktype = SOCK_STREAM;
 
-	struct in_addr IPv4_t;
-	if((Err = inet_aton(IPv4, &IPv4_t)) == 0)
-	{
-		printf("Could not convert IPv4 address to network bytes");
-		exit(-1);
-	}
-//	char * ipv4 = inet_ntoa(in);
-
 	//Setting Server info
-	if((RETURN_VAL = getaddrinfo(IPv4, PortNum, &LocalAddr, &ServerInfo)) != 0)
+	if((RETURN_VAL = getaddrinfo(IPv4, PortNum, &LocalAddr, &ptAddr)) != 0)
 	{
 		fprintf(stderr, "getaddrinfo: %s \n", gai_strerror(RETURN_VAL));
 	} 
@@ -43,8 +34,14 @@ Client::~Client()
 /////////////////////////////////////////////////////////////////////////
 int Client::Connect()
 {
+	if(ptAddr == NULL)
+	{
+		fprintf(stderr, "client failed to connected \n");
+		return -1;
+	}
+
 	//Setting socket
-	for(ptAddr = ServerInfo; ptAddr != NULL; ptAddr = ptAddr->ai_next)
+	while (ptAddr != NULL)
 	{
 		if((LocalSocket = socket(ptAddr->ai_family, ptAddr->ai_socktype, ptAddr->ai_protocol)) == -1)
 		{
@@ -59,16 +56,18 @@ int Client::Connect()
 			continue;
 		}
 		
-		break;
+		ptAddr = ptAddr->ai_next;
 	}
 
-	if(ptAddr == NULL)
-	{
-		fprintf(stderr, "client failed to connected \n");
-		return -1;
-	}
+	freeaddrinfo(ptAddr);
 
-	freeaddrinfo(ServerInfo);
+	return 0;
+}
+
+int Client::SendByte()//char * Data, int Len)
+{
+	while(send(LocalSocket, "Hello, world!", 13, 0) == -1);
+	close(LocalSocket);
 
 	return 0;
 }
