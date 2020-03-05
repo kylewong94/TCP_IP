@@ -17,16 +17,13 @@ class Server
 		struct addrinfo *	ptAddr;
 
 	public:
-		const static int   	BUFFERSIZE = 64;
-		char 				Buffer [BUFFERSIZE];
-
 		int   				ClientSocket;
 		
 		Server(char * PortNumber);
 		~Server();
-		int   ServerStart();
+		int   Start();
 		int   Accept();
-		int   Receive();
+		int   Receive(void * Buffer, int BufferSize);
 		int   Send();	
 };
 ///////////////////////////////////////////////////////////////////////

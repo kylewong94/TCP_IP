@@ -70,7 +70,7 @@ Server::~Server()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-int Server::ServerStart()
+int Server::Start()
 {
 	if (ptAddr == NULL)
 	{
@@ -87,7 +87,7 @@ int Server::ServerStart()
 	}
 
 	Accept();
-	Receive();	
+	//Receive();	
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,24 +104,19 @@ int Server::Accept()
 	return 0;
 	
 }
-int Server::Receive()
+
+int Server::Receive(void * Buffer, int BufferSize)
 {
 	printf("Receiving State . . . \n");
 	int DataLen; 	
 	
-	if((DataLen = recv(ClientSocket , Buffer, BUFFERSIZE-1, 0)) == -1)
+	if((DataLen = recv(ClientSocket , Buffer, BufferSize, 0)) == -1)
 	{
 		perror("recv");
 		return -1;
 	}
 
-	for(int i = 0; i < DataLen; i++)
-	{
-	}
- 
-	//printf("%s \n", Buffer);
-
-	return 0;
+	return DataLen;
 }
 
 int Server::Send()
