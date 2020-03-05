@@ -1,7 +1,11 @@
-#include "GPSDataServer.h"
+#include <fstream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "GPSDataServer.h"
+
+using namespace std;
 
 /////////////////////////////////////////////
 GPSDataServer::GPSDataServer(char * PortNumber) : Server(PortNumber)
@@ -11,7 +15,7 @@ GPSDataServer::GPSDataServer(char * PortNumber) : Server(PortNumber)
 
 /////////////////////////////////////////////
 GPSDataServer::~GPSDataServer()
-{	
+{
 }
 /////////////////////////////////////////////
 
@@ -20,26 +24,40 @@ int GPSDataServer::ReceiveGPSData()
 {
 	memset(GPSDataBuffer, 0, sizeof GPSDataBuffer);
 
-	int DataLen = Receive(GPSDataBuffer, BufferSize);
-	if(DataLen == -1)
+	int Len = Receive(GPSDataBuffer, BufferSize);
+	if(Len == -1)
 	{
 		return -1;
 	}
 	
-	DataLen = DataLen / 4;
+	// must divide by 4 since Len is originally in bytes
+	Len = Len / 4;
 
-	for(int i = 0; i < DataLen; i++)
+	// print to console
+	for(int i = 0; i < Len; i++)
 	{
 		printf("%d \t", GPSDataBuffer[i]);
 	}
 	
-	return DataLen;
+	return Len;
 }
 /////////////////////////////////////////////
 
 /////////////////////////////////////////////
-int GPSDataServer::WriteToFile()
+int GPSDataServer::ReceiveAndWriteGPSDataToFile(char * Filename)
 {
+	int Len = ReceiveGPSData();
+
+	ofstream File;
+	File.open(Filename);
+	
+	for(int i = 0; i < Len; i++)
+	{
+		File << GPSDataBuffer[i] << "\n";
+	}
+
+	File.close();
+
 	return 0;
 }
 /////////////////////////////////////////////
