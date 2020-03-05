@@ -107,15 +107,20 @@ int Server::Accept()
 int Server::Receive()
 {
 	printf("Receiving State . . . \n");
-	int RecvFlag; 	
+	int DataLen; 	
 	
-	if((RecvFlag = recv(ClientSocket , Buffer, BUFFERSIZE-1, 0)) == -1)
+	if((DataLen = recv(ClientSocket , Buffer, BUFFERSIZE-1, 0)) == -1)
 	{
 		perror("recv");
 		return -1;
 	}
+
+	for(int i = 0; i < DataLen; i++)
+	{
+	}
  
-	printf("%s \n", Buffer);
+	//printf("%s \n", Buffer);
+
 	return 0;
 }
 

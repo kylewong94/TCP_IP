@@ -3,6 +3,6 @@
 int main (void)
 {
 	char PortNumber[] = "1025";
-	GPSDataServer ServerListenTest(PortNumber);
-	ServerListenTest.ServerStart();
+	//GPSDataServer ServerListenTest(PortNumber);
+	//ServerListenTest.ServerStart();
 }

@@ -9,18 +9,18 @@
 class Server
 {
 	protected:
-		int    HostSocket;
-		int    AddressType; // 0 for IPv4 | 1 for IPv6 | 2 for unspecified
+		int    				HostSocket;
+		int    				AddressType; // 0 for IPv4 | 1 for IPv6 | 2 for unspecified
 
 		struct addrinfo 	HostAddr;
 		struct addrinfo *	ServInfo;
 		struct addrinfo *	ptAddr;
 
 	public:
-		const static int   BUFFERSIZE = 64;
-		char Buffer [BUFFERSIZE];
+		const static int   	BUFFERSIZE = 64;
+		char 				Buffer [BUFFERSIZE];
 
-		int   ClientSocket;
+		int   				ClientSocket;
 		
 		Server(char * PortNumber);
 		~Server();

@@ -8,9 +8,9 @@ class GPSDataServer : public Server
 		GPSDataServer(char * PortNum); 
 		~GPSDataServer();		
 		
-		int Accept();
-		int Receive();
-		int Send();
+		//int Accept();
+		//int Receive();
+		int SendData();
 		int WriteToFile();
 		
 };
