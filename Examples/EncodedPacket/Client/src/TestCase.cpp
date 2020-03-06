@@ -3,8 +3,8 @@
 
 int main (void)
 {
-	char IPv4 [] = "127.0.0.1";
-	char PortNumber [] = "1025";
+	char IPv4 [] = "71.92.199.189";
+	char PortNumber [] = "25565";
 
 	Client LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();
@@ -21,6 +21,6 @@ int main (void)
 	GPSData.Deg = 69;
 	
 	int DataLen = 12;
-
-	LocalTest.SendInt(&GPSData.Lat, DataLen);
+	LocalTest.SendInt();
+//	LocalTest.SendInt(&GPSData.Lat, DataLen);
 }

@@ -65,9 +65,11 @@ int Client::Connect()
 	return 0;
 }
 
-int Client::SendInt(int * Data, int Len)
+//int Client::SendInt(int * Data, int Len)
+int Client::SendInt()
 {
 	while(send(LocalSocket, Data, Len, 0) == -1);
+//	while(send(LocalSocket, "HelloWorld!", 11 , 0) == -1);
 	close(LocalSocket);
 
 	return 0;
