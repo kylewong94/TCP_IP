@@ -3,7 +3,7 @@
 
 int main (void)
 {
-	char IPv4 [] = "127.0.0.1";
+	char IPv4 [] = "192.168.137.233";
 	char PortNumber [] = "1025";
 
 	Client LocalTest(IPv4, PortNumber);	
@@ -16,9 +16,9 @@ int main (void)
 		int Deg;
 	} GPSData;
 
-	GPSData.Lat = -1;
-	GPSData.Long = 420;
-	GPSData.Deg = 69;
+	GPSData.Lat = 12;
+	GPSData.Long = 100;
+	GPSData.Deg = -45;
 	
 	int DataLen = 12;
 

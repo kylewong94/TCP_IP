@@ -65,16 +65,17 @@ int Client::Connect()
 	return 0;
 }
 
-int Client::SendString(char ** argv, int Len)
+int Client::SendHelloWorld()
 {
-	for(int i = 1; i < Len; i++)
-	{
-		char * Data = argv[i];
-		Len = sizeof(&Data) / sizeof(Data[i]);
+	while(send(LocalSocket, "Hello, World!", 13, 0) == -1);
+	close(LocalSocket);
+	
+	return 0;
+}
 
-		printf("argv %d: %s\n", i, Data); 
-		while(send(LocalSocket, Data, Len, 0) == -1);
-	}
+int Client::SendString(char * Data, int Len)
+{
+	while(send(LocalSocket, Data, Len, 0) == -1);
 	close(LocalSocket);
 
 	return 0;

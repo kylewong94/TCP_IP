@@ -23,7 +23,8 @@ class Client
 		~Client();
 
 		int Connect();
-		int SendString(char ** argv, int Len);
+		int SendHelloWorld();
+		int SendString(char * Data, int Len);
 };
 ///////////////////////////////////////////////////////////////////////
 

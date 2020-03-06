@@ -11,8 +11,7 @@ int main (int argc, char ** argv)
 
 	Client LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();
-	int Len;
-
-	LocalTest.SendString(argv, argc);
-
+	
+	LocalTest.SendHelloWorld();
+	LocalTest.SendString();
 }
