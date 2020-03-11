@@ -23,8 +23,7 @@ class Client
 		~Client();
 
 		int Connect();
-		//int SendInt(int * Data, int Len);
-		int SendInt();
+		int SendInt(void * Data, int Len);
 };
 ///////////////////////////////////////////////////////////////////////
 
