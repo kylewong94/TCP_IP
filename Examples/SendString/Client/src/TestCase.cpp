@@ -1,17 +1,12 @@
-//#include <fstream>
-#include <string.h>
-#include <stdio.h>
-
 #include "Client.h"
 
-int main (int argc, char ** argv)
+int main ()
 {
-	char IPv4 [] = "127.0.0.1";
-	char PortNumber [] = "1025";
+	char IPv4 [] = "71.92.199.189";
+	char PortNumber [] = "25565";
 
 	Client LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();
 	
 	LocalTest.SendHelloWorld();
-	LocalTest.SendString();
 }
