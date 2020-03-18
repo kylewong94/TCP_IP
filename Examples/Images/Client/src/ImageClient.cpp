@@ -71,12 +71,12 @@ int ImageClient::SendConsoleMessages(int Num_Messages, char ** Messages)
 	if(num_events == -1)
 	{
 		printf("poll\n");
-		return -1;
+		//return -1;
 	}
 	else if (num_events == 0)
 	{
 		printf("Poll timed out! \n");
-		return -1;
+		//return -1;
 	}
 	else
 	{
@@ -92,6 +92,8 @@ int ImageClient::SendConsoleMessages(int Num_Messages, char ** Messages)
 			SendMessages(Num_Messages, Messages);
 		}
 	}
+
+	close(LocalSocket);
 	
 	return 0;
 
@@ -116,12 +118,12 @@ int ImageClient::SendMessages(int Num_Messages, char ** Messages)
 		if(num_events == -1)
 		{
 			printf("poll\n");
-			return -1;
+			//return -1;
 		}
 		else if (num_events == 0)
 		{
 			printf("Poll timed out! \n");
-			return -1;
+			//return -1;
 		}
 		else
 		{

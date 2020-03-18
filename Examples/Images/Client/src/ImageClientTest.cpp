@@ -2,8 +2,8 @@
 
 int main (int argc, char ** argv)
 {
-	char IPv4 [] = "127.0.0.1";
-	char PortNumber [] = "1025";
+	char IPv4 [] = "71.92.199.189";
+	char PortNumber [] = "25565";
 
 	ImageClient LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();
