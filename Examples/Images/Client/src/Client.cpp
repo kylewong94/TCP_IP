@@ -71,7 +71,7 @@ int Client::Connect()
 int Client::Send(void * Data, int Len)
 {
 	send(LocalSocket, Data, Len, 0);
-	close(LocalSocket);
+//	close(LocalSocket);
 
 	return 0;
 }
