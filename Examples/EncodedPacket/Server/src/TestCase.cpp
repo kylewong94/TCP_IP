@@ -6,8 +6,4 @@ int main (void)
 	GPSDataServer Server(PortNumber);
 	Server.Start();
 
-	//Server.ReceiveGPSData();
-
-	char Filename[] = "data.txt";
-	Server.ReceiveAndWriteGPSDataToFile(Filename);
 }

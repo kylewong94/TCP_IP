@@ -8,11 +8,11 @@ bin_path=../bin
 cxx=g++
 cflags= -Wall -g  
 
-$(proj): GPSDataServerTest.o GPSDataServer.o Server.o
-	$(cxx) $(cflags) $(obj_path)/GPSDataServerTest.o $(obj_path)/GPSDataServer.o $(obj_path)/Server.o -o $(bin_path)/$(proj)
+$(proj): TestCase.o GPSDataServer.o Server.o
+	$(cxx) $(cflags) $(obj_path)/TestCase.o $(obj_path)/GPSDataServer.o $(obj_path)/Server.o -o $(bin_path)/$(proj)
 
-GPSDataServerTest.o: GPSDataServerTest.cpp GPSDataServer.o
-	$(cxx) $(cflags) -c GPSDataServerTest.cpp -o $(obj_path)/GPSDataServerTest.o
+TestCase.o: TestCase.cpp GPSDataServer.o
+	$(cxx) $(cflags) -c TestCase.cpp -o $(obj_path)/TestCase.o
 
 GPSDataServer.o: GPSDataServer.h Server.o
 	$(cxx) $(cflags) -c GPSDataServer.cpp -o $(obj_path)/GPSDataServer.o

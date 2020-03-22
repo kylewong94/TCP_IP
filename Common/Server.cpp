@@ -1,7 +1,6 @@
 #include "Server.h"
 #include <stdio.h>
 #include <unistd.h>
-#include <errno.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -10,7 +9,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 Server::Server(char * PortNumber)
 {
 	int Err = 0;
@@ -21,63 +20,67 @@ Server::Server(char * PortNumber)
 	HostAddr.ai_socktype = SOCK_STREAM;
 	HostAddr.ai_flags    = AI_PASSIVE;
 
-
+        //Setting struct for host 
 	if ((Err = getaddrinfo(NULL, PortNumber, &HostAddr, &ServInfo)) != 0)
 	{
 		fprintf(stderr, "getaddrinfo error: %s \n", gai_strerror(Err));
 		exit(-1);
 	}
 
+        //Setting up Server to listen on socket
 	printf("\nSetting Host Addr Info . . .\n");
-	for(ptAddr = ServInfo; ptAddr != NULL; ptAddr = ptAddr->ai_next)
+	for(ServInfo = ServInfo; ServInfo != NULL; ServInfo = ServInfo->ai_next)
 	{
-
 		printf("Setting Host Socket . . . \n");
-		if(((HostSocket = socket(ptAddr->ai_family, ptAddr->ai_socktype, ptAddr->ai_protocol))) == -1)
+		if(((HostSocket = socket(ServInfo->ai_family, 
+                     ServInfo->ai_socktype, ServInfo->ai_protocol))) == -1)
 		{
-			perror("server: socket");
+		        printf("Server Error: Cannot set host socket - line 36");	
 			continue;
 		}
 		
 		printf("Setting Socket Options \n");
-		if(setsockopt(HostSocket, SOL_SOCKET, SO_REUSEADDR, &REUSEPORT, sizeof(int)) == -1)
+		if(setsockopt(HostSocket, SOL_SOCKET, SO_REUSEADDR, &REUSEPORT,
+                              sizeof(int)) == -1)
 		{
-			perror("setsockopt");
+		        printf("Server Error: Setting Socket Options" 
+                                "- line 44 \n");
 			exit(1);
 		} 
 
 		printf("Binding Host Socket to Port . . .\n");
-		if(bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_addrlen) == -1)
+		if(bind(HostSocket,ServInfo->ai_addr, ServInfo->ai_addrlen) == -1)
 		{
 			close(HostSocket);
-			perror("server: bind");
+		        printf("Server Error: Cannot bind socket - line 53");	
 			continue;
 		}
-		
-		break;
 	}
-
-	freeaddrinfo(ServInfo);
+	
+        freeaddrinfo(ServInfo);
 	
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 Server::~Server()
 {
 	freeaddrinfo(ptAddr);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-int Server::ServerStart()
+///////////////////////////////////////////////////////////////////////////////
+int Server::Start()
 {
 	if (ptAddr == NULL)
 	{
 		fprintf(stderr, "Server: failed to bind \n");
 		return -1;
 	}
-	
+        else
+        {
+                
+        }        
 	printf("Server: Listening \n"); 
 
 	if(listen(HostSocket, 1) == -1) 
@@ -87,10 +90,10 @@ int Server::ServerStart()
 	}
 
 	Accept();
-	Receive();	
+	//Receive();	
 	return 0;
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 int Server::Accept()
 {
 	
@@ -104,19 +107,18 @@ int Server::Accept()
 	return 0;
 	
 }
-int Server::Receive()
+int Server::Receive(void * Buffer, int BufferSize)
 {
 	printf("Receiving State . . . \n");
-	int RecvFlag; 	
+	int DataLen; 	
 	
-	if((RecvFlag = recv(ClientSocket , Buffer, BUFFERSIZE-1, 0)) == -1)
+	if((DataLen = recv(ClientSocket , Buffer, BufferSize, 0)) == -1)
 	{
 		perror("recv");
 		return -1;
 	}
- 
-	printf("%s \n", Buffer);
-	return 0;
+
+	return DataLen;
 }
 
 int Server::Send()

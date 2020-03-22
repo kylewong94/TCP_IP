@@ -22,7 +22,8 @@ GPSDataServer::~GPSDataServer()
 /////////////////////////////////////////////
 int GPSDataServer::ReceiveGPSData()
 {
-	memset(GPSDataBuffer, 0, sizeof GPSDataBuffer);
+#if 0
+        memset(GPSDataBuffer, 0, sizeof GPSDataBuffer);
 
 	int Len = Receive(GPSDataBuffer, BufferSize);
 	if(Len == -1)
@@ -40,6 +41,8 @@ int GPSDataServer::ReceiveGPSData()
 	}
 	
 	return Len;
+#endif
+        return 0;
 }
 /////////////////////////////////////////////
 

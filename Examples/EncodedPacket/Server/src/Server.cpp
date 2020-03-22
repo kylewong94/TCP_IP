@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 Server::Server(char * PortNumber)
 {
 	int Err = 0;
@@ -27,18 +27,19 @@ Server::Server(char * PortNumber)
 		exit(-1);
 	}
 
-        //Setting up Server to listen on socket
+        // Setting up Server to listen on socket
+        // Set socket->set socket options->bind socket to port
 	printf("\nSetting Host Addr Info . . .\n");
-	for(ServInfo = ServInfo; ServInfo != NULL; ServInfo = ServInfo->ai_next)
+	for(ptAddr = ServInfo; ptAddr != NULL; ptAddr = ptAddr->ai_next)
 	{
 		printf("Setting Host Socket . . . \n");
-		if(((HostSocket = socket(ServInfo->ai_family, 
-                     ServInfo->ai_socktype, ServInfo->ai_protocol))) == -1)
+		if(((HostSocket = socket(ptAddr->ai_family, 
+                     ptAddr->ai_socktype, ptAddr->ai_protocol))) == -1)
 		{
 		        printf("Server Error: Cannot set host socket - line 36");	
 			continue;
 		}
-		
+	
 		printf("Setting Socket Options \n");
 		if(setsockopt(HostSocket, SOL_SOCKET, SO_REUSEADDR, &REUSEPORT,
                               sizeof(int)) == -1)
@@ -49,18 +50,17 @@ Server::Server(char * PortNumber)
 		} 
 
 		printf("Binding Host Socket to Port . . .\n");
-		if(bind(HostSocket,ServInfo->ai_addr, ServInfo->ai_addrlen) == -1)
+		if((Err = bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_addrlen)) == -1)
 		{
 			close(HostSocket);
 		        printf("Server Error: Cannot bind socket - line 53");	
 			continue;
 		}
 	}
-	
         freeaddrinfo(ServInfo);
 	
 }
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 Server::~Server()
@@ -72,7 +72,7 @@ Server::~Server()
 ///////////////////////////////////////////////////////////////////////////////
 int Server::Start()
 {
-	if (ptAddr == NULL)
+	if (ServInfo == NULL)
 	{
 		fprintf(stderr, "Server: failed to bind \n");
 		return -1;
@@ -93,35 +93,68 @@ int Server::Start()
 	//Receive();	
 	return 0;
 }
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
 int Server::Accept()
 {
-	
+        int Return_Val;	
 	if((ClientSocket = accept(HostSocket, NULL, NULL)) == -1)
 	{
-		printf("Client could not connect");
-		return -1;
+		printf("Client could not connect\n");
+		Return_Val = -1;
 	}
-	printf("Client is connected \n");
-	
-	return 0;
+        else
+        {
+                printf("Client successfully connected \n");
+                Return_Val = Send_Flag();	
+        }
+        
+	return Return_Val;
 	
 }
-int Server::Receive(void * Buffer, int BufferSize)
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+int Server::Receive()
 {
+        int Return_Val = 0;
 	printf("Receiving State . . . \n");
-	int DataLen; 	
-	
+        
+        #if 0	
 	if((DataLen = recv(ClientSocket , Buffer, BufferSize, 0)) == -1)
 	{
-		perror("recv");
-		return -1;
+                printf("Server: Receive Error - Line 116 \n");
 	}
-
-	return DataLen;
+        #endif
+	return Return_Val;
 }
+////////////////////////////////////////////////////////////////////////////////
 
-int Server::Send()
+////////////////////////////////////////////////////////////////////////////////
+int Server::Send_Flag()
 {
-	return 0;
+        while(send(HostSocket, &SUCCESS_FLAG, sizeof(SUCCESS_FLAG), 0));
+        /*
+        int Return_Val = 0;
+        if((Return_Val = send(HostSocket, &SUCCESS_FLAG, 
+                                        sizeof(SUCCESS_FLAG), 0)) == -1)
+        {
+                Return_Val = -1;
+                printf("Server: Failed to send through socket - Send_Flag()\n"); 
+        }
+        else
+        {
+                printf("Server: Send Sucess!\n"); 
+        }
+        */
+        return 0;
 }
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+int Server::Send(unsigned char * Buffer)
+{
+        return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
