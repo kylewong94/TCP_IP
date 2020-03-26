@@ -11,7 +11,7 @@ int main (void)
 
         Client LocalTest(IPv4, PortNumber);	
 	LocalTest.Connect();
-
+#if 0
 	struct GPS_Info
 	{
 		int Lat;
@@ -26,4 +26,7 @@ int main (void)
 	int DataLen = 12;
 
 	LocalTest.SendInt(&GPSData.Lat, DataLen);
+#endif
+
+        //LocalTest.Receive();
 }

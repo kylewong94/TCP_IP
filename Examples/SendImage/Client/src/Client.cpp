@@ -66,8 +66,7 @@ int Client::Connect()
 		{
                         printf("Client: Could not connect - Connect()\n");
 			close(LocalSocket);
-                        RetVal = -1;
-			exit(-1);
+                        exit(-1);
 		}
                 else
                 {
@@ -78,7 +77,7 @@ int Client::Connect()
 	}
         
 	freeaddrinfo(ServerInfo);
-        
+#if 0 
         printf("Checking socket communication . . .\n");
         if((RetVal = Receive()) < 1)
         {
@@ -88,12 +87,13 @@ int Client::Connect()
         {
                 printf("Socket communication success!\n");
         }
-	
+#endif	
         return RetVal;
 }
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+/*
 int Client::SendInt(int * Data, int Len)
 {
 	while(send(LocalSocket, Data, Len, 0) == -1);
@@ -101,6 +101,7 @@ int Client::SendInt(int * Data, int Len)
 
 	return 0;
 }
+*/
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 Server::Server(char * PortNumber)
 {
-	int Err = 0;
+	int RetVal = 0;
 	int REUSEPORT = 1;
 
 	memset(&HostAddr, 0, sizeof HostAddr);
@@ -21,10 +21,10 @@ Server::Server(char * PortNumber)
 	HostAddr.ai_flags    = AI_PASSIVE;
 
         //Setting struct for host 
-	if ((Err = getaddrinfo(NULL, PortNumber, &HostAddr, &ServInfo)) != 0)
+	if ((RetVal = getaddrinfo(NULL, PortNumber, &HostAddr, &ServInfo)) != 0)
 	{
-		fprintf(stderr, "getaddrinfo error: %s \n", gai_strerror(Err));
-		exit(-1);
+                printf("Server::Server cannot get addrinfo\n");
+                exit(-1);
 	}
 
         // Setting up Server to listen on socket
@@ -36,26 +36,36 @@ Server::Server(char * PortNumber)
 		if(((HostSocket = socket(ptAddr->ai_family, 
                      ptAddr->ai_socktype, ptAddr->ai_protocol))) == -1)
 		{
-		        printf("Server Error: Cannot set host socket - line 36");	
-			continue;
+		        printf("Server::Server - Cannot set host socket()");
 		}
-	
+                else
+                {
+                        printf("Server::Server - Host socket set\n");
+                }       
+
 		printf("Setting Socket Options \n");
 		if(setsockopt(HostSocket, SOL_SOCKET, SO_REUSEADDR, &REUSEPORT,
                               sizeof(int)) == -1)
 		{
-		        printf("Server Error: Setting Socket Options" 
-                                "- line 44 \n");
-			exit(1);
+		        printf("Server::Server - Cannot set socket options"
+                                "setsockopt\n");
 		} 
+                else
+                {
+                        printf("Server::Server - Client set\n"); 
+                }
 
 		printf("Binding Host Socket to Port . . .\n");
-		if((Err = bind(HostSocket,ptAddr->ai_addr, ptAddr->ai_addrlen)) == -1)
+		if((RetVal = bind(HostSocket,ptAddr->ai_addr, 
+                                                ptAddr->ai_addrlen)) == -1)
 		{
 			close(HostSocket);
-		        printf("Server Error: Cannot bind socket - line 53");	
-			continue;
+		        printf("Server::Server - Cannot bind socket bind()\n");	
 		}
+                else
+                {
+                        printf("Server::Server - Host socket binded bind()\n");
+                }
 	}
         freeaddrinfo(ServInfo);
 	
@@ -72,25 +82,19 @@ Server::~Server()
 ///////////////////////////////////////////////////////////////////////////////
 int Server::Start()
 {
-	if (ServInfo == NULL)
+        int RetVal;
+	
+        printf("Server: Listening \n"); 
+	if((RetVal =listen(HostSocket, 1)) == -1) 
 	{
-		fprintf(stderr, "Server: failed to bind \n");
-		return -1;
+		printf("Server::Start() - Error listening\n");
+	        RetVal = -1;	
 	}
         else
         {
-                
-        }        
-	printf("Server: Listening \n"); 
-
-	if(listen(HostSocket, 1) == -1) 
-	{
-		perror("listen");
-		return -1;
-	}
-
-	Accept();
-	return 0;
+               RetVal = Accept();
+        }
+	return RetVal;
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -108,24 +112,8 @@ int Server::Accept()
                 printf("Client successfully connected \n");
         }
        
-        Return_Val = Send_Flag();
 	return Return_Val;
 	
-}
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-int Server::Receive()
-{
-        int Return_Val = 0;
-	printf("Receiving State . . . \n");
-        /*
-	if((DataLen = recv(ClientSocket , Buffer, BufferSize, 0)) == -1)
-	{
-                printf("Server: Receive Error - Line 116 \n");
-	}
-        */	
-        return Return_Val;
 }
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -13,7 +13,7 @@ class Client
                 int    Bytecount;
                 int    SUCCESS_FLAG = true;
 
-                unsigned char Buffer[10];
+                unsigned char * Buffer;
 
 		struct addrinfo 	LocalAddr;
 		struct addrinfo *	ServerInfo;
@@ -29,7 +29,6 @@ class Client
 		int Connect();
                 int StartSend();
                 int Receive();
-		int SendInt(int * Data, int Len);
                 int Send();
 };
 ///////////////////////////////////////////////////////////////////////
