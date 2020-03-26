@@ -81,7 +81,7 @@ void ImageClient::WriteImage()
         }
 
         printf("Buffer size: %zu \n", sizeof(ImageBuffer));
-        fwrite(ImageBuffer, 1, ImageSize, FileToWrite);
+        fwrite(ImageBuffer, 1, 60663, FileToWrite);
         fclose(FileToWrite);
 
         printf("ImageClient::WriteImage() - Image written\n");
@@ -89,3 +89,26 @@ void ImageClient::WriteImage()
 }
 ///////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+int ImageClient::ReceiveImage()
+{
+        printf("Receiving Image . . .");
+        int RetVal;
+        int ImageSize = 60663; //Temporarily
+
+        ImageBuffer = new unsigned char [ImageSize];
+        
+        if((RetVal = recv(LocalSocket, ImageBuffer, ImageSize, 0)) == -1)
+        {
+                printf("ImageClient::ReceiveImage() - Error could not"
+                               " receive image\n");
+                exit(-1);
+        }
+        else
+        {
+                printf("ImageClient::ReceiveImage() - Image in buffer! \n");
+        }
+
+        return RetVal;
+}
+////////////////////////////////////////////////////////////////////////////////

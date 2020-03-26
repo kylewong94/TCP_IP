@@ -14,7 +14,8 @@ class ImageClient : public Client
 
                 int  SendImage();
                 void ReadImage(char * ptImage);
-                void WriteImage(); 
+                void WriteImage();
+                int  ReceiveImage(); 
 };
 ///////////////////////////////////////////////////////////////////////
 

@@ -8,9 +8,10 @@ int main (void)
 
 	char IPv4 [] = "127.0.0.1";
 	char PortNumber [] = "1025";
-        char FileName [] = "picture.jpeg";
+//      char FileName [] = "picture.jpeg";
+
         ImageClient Tester(IPv4, PortNumber);
         Tester.Connect();
-        Tester.ReadImage(FileName);
-        Tester.SendImage(); 
+        Tester.ReceiveImage();
+        Tester.WriteImage(); 
 }
