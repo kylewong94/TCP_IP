@@ -92,12 +92,13 @@ int ImageServer::ReceiveMessages()
 				{
 					perror("recv");
 				}
-				close(pfds[0].fd);
 
 			}
 		}
 
 	}
+
+	close(ClientSocket);
 
 	return 0;
 }
@@ -139,7 +140,7 @@ int ImageServer::ReceiveNMessage(int n)
 				
 				if(NBytes > 0)
 				{
-					printf("Message %d: %s\n", i, ImageBuffer);
+					printf("Message %d: %s\n", i + 1, ImageBuffer);
 				}
 				else
 				{
@@ -151,7 +152,6 @@ int ImageServer::ReceiveNMessage(int n)
 					{
 						perror("recv");
 					}
-					close(pfds[0].fd);
 
 				}
 
