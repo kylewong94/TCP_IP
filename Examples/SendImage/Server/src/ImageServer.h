@@ -5,16 +5,23 @@
 class ImageServer : public Server
 {
 	private:
-		unsigned char * ImageBuffer;
+                const static uint16_t MaxSize = 4096; //Maximum size able to communicate through socket
+
+                unsigned char * ImageBuffer;
+                unsigned char   ReceiveBuffer[MaxSize];
+                uint8_t         PacketsToSend; 
                 uint32_t        ImageSize;
+                
 	public:
 		ImageServer(char * PortNum);
 		~ImageServer();		
 
-                int  ReceiveImage();
+                int   SendImage();
+                int   ReceiveImage();
+                void  Receive();   
+                void  WriteImage();
                 void  ReadImage(char * ImageName); 	
-                int  SendImage();
-                void WriteImage();
+                void  ReceiveCycle();
 };
 ///////////////////////////////////////////////////
 

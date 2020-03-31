@@ -23,10 +23,9 @@ int ImageServer::ReceiveImage()
 {
         printf("Receiving Image . . .");
         int RetVal;
-        int ImageSize = 160037; //Temporarily
-        ImageBuffer = new unsigned char [ImageSize];
+        //int ImageSize = 160037;  
         
-        if((RetVal = recv(ClientSocket, ImageBuffer, ImageSize, 0)) == -1)
+        if((RetVal = recv(ClientSocket, ReceiveBuffer, MaxSize, 0)) == -1)
         {
                 printf("ImageServer::ReceiveImage() - Error could not"
                                " receive image\n");
@@ -34,12 +33,50 @@ int ImageServer::ReceiveImage()
         }
         else
         {
-                printf("ImageServer::ReceiveImage() - Image in buffer! \n");
+                printf("ImageServer::ReceiveImage() - "
+                                "Bytes in buffer %i \n", RetVal);
         }
-
+        
         return RetVal;
 }
 ////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+int ImageServer::SendImage()
+{
+        //Under construction
+        int Err;
+        while((Err = send(ClientSocket, ImageBuffer, ImageSize, 0)) == -1);
+        close(ClientSocket);
+
+        return Err;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+void ImageServer::Receive()
+{
+        //We want to receive an integer that will tell us how many packets we
+        //will need to stitch together an image
+        //Will need to check if size received was 4 bytes (integer)
+        uint8_t RetVal;
+        memset(ReceiveBuffer, 0, MaxSize); 
+        if((RetVal = recv(ClientSocket, ReceiveBuffer, sizeof(int), 0)) == -1)
+        {
+                printf("ImageServer::Receive() - Error could not" 
+                                "receive bytes \n");
+                exit(-1);
+        }     
+        else
+        {
+                printf("ImageServer::Receive() -" 
+                                "Amount of cycles needed %i \n", RetVal);
+                PacketsToSend = RetVal;
+        }
+        ImageSize = MaxSize * PacketsToSend;
+}
+////////////////////////////////////////////////////////////////////////////////
+
 
 ////////////////////////////////////////////////////////////////////////////////
 void ImageServer::WriteImage()
@@ -56,7 +93,7 @@ void ImageServer::WriteImage()
                 printf("ImageClient::WriteImage() - File created\n");
         }
 
-        fwrite(ImageBuffer, 1, 160037, FileToWrite);
+        fwrite(ImageBuffer, 1, ImageSize, FileToWrite);
         fclose(FileToWrite);
 
         printf("ImageClient::WriteImage() - Image written\n");
@@ -87,12 +124,13 @@ void ImageServer::ReadImage(char * ImageName)
         int Err;
         if((Err = fread(ImageBuffer, ImageSize, sizeof(char), ptImageFile)) < 1)
         {
-                printf("ImageClient:: Failed to read image to buffer\n"); 
+                printf("ImageClient::ReadImage() Failed to "
+                                "read image to buffer\n"); 
                 exit(-1);
         }
         else
         {
-                printf("ImageClient:: Read image to buffer: %i\n",
+                printf("ImageClient::ReadImage() Read image to buffer: %i\n",
                         ImageSize); 
         } 
         fclose(ptImageFile);
@@ -102,12 +140,37 @@ void ImageServer::ReadImage(char * ImageName)
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-int ImageServer::SendImage()
+void ImageServer::ReceiveCycle()
 {
-        int Err;
-        while((Err = send(ClientSocket, ImageBuffer, ImageSize, 0)) == -1);
-        close(ClientSocket);
+        //Under construction
+        //We receive the total amount of packets that will be sent through the
+        //socket
+        // Fills PacketsToSend
+        Receive();
+        
+        int Cycles = 0;
+        int ImageIndex = 0;
 
-        return Err;
+        ImageBuffer = new unsigned char [ImageSize];
+
+        printf("ImageServer::ReceiveCycle() - Total Packets needed to "
+                        "process: %i \n", PacketsToSend);
+        while(Cycles < PacketsToSend)
+        {
+               ImageIndex = MaxSize*Cycles;
+               //Grab 4096 bytes from socket
+               ReceiveImage();
+               //Writing Buffer to ImageBuffer
+               for(int IndexNo = ImageIndex; IndexNo < MaxSize*(Cycles+1); IndexNo++)
+               {
+                       ImageBuffer[IndexNo] = ReceiveBuffer[IndexNo];
+               } 
+               //Increase cycle
+               Cycles++;
+
+        }
+
+        WriteImage();
 }
 ////////////////////////////////////////////////////////////////////////////////
+

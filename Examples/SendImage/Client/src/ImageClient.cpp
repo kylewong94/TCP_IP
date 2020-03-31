@@ -58,7 +58,15 @@ void ImageClient::ReadImage(char * ImageName)
 int ImageClient::SendImage()
 {
         int Err;
-        while((Err = send(LocalSocket, ImageBuffer, ImageSize, 0)) == -1);
+        
+        if((Err = send(LocalSocket, ImageBuffer, ImageSize, 0)) == -1)
+        {
+                printf("ImageClient:: cannot send image \n");
+        }
+        else
+        {
+                printf("ImageClient:: Successfully sent!\n");
+        }
         close(LocalSocket);
 
         return Err;
@@ -70,7 +78,7 @@ void ImageClient::WriteImage()
 {
         FILE * FileToWrite;
 
-        if((FileToWrite = fopen("newImage_1.jpeg", "w")) == NULL)
+        if((FileToWrite = fopen("newImage_1.png", "w")) == NULL)
         {
                 printf("Failed to write image - ImageClient::WriteImage()\n");
                 exit(-1);
@@ -81,7 +89,7 @@ void ImageClient::WriteImage()
         }
 
         printf("Buffer size: %zu \n", sizeof(ImageBuffer));
-        fwrite(ImageBuffer, 1, 60663, FileToWrite);
+        fwrite(ImageBuffer, 1, 2638, FileToWrite);
         fclose(FileToWrite);
 
         printf("ImageClient::WriteImage() - Image written\n");
@@ -94,7 +102,7 @@ int ImageClient::ReceiveImage()
 {
         printf("Receiving Image . . .");
         int RetVal;
-        int ImageSize = 60663; //Temporarily
+        int ImageSize = 2638; //Temporarily
 
         ImageBuffer = new unsigned char [ImageSize];
         

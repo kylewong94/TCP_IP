@@ -9,10 +9,6 @@ class Server
 {
 	protected:
 		int                     HostSocket;
-                int                     Bytecount; //Holder to count how many bytes were received from client 
-                bool                     SUCCESS_FLAG = true; 
-                //Buffer is to hold a max of 1024 bytes at a time
-                unsigned char           Buffer[1024];
 	
                 struct addrinfo 	HostAddr;
 		struct addrinfo *	ServInfo;
@@ -26,8 +22,6 @@ class Server
                 int           Start();
                 int           Begin();
 		int           Accept();
-		int   Receive();
-		int           Send(unsigned char * Buffer);
                 int           Send_Flag();        
 };
 ///////////////////////////////////////////////////////////////////////
