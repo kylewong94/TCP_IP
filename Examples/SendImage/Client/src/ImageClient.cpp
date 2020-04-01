@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 ImageClient::ImageClient(char * INET4, char * PortNum) : Client(INET4, PortNum)
@@ -89,7 +90,7 @@ void ImageClient::WriteImage()
         }
 
         printf("Buffer size: %zu \n", sizeof(ImageBuffer));
-        fwrite(ImageBuffer, 1, 2638, FileToWrite);
+        fwrite(ImageBuffer, 1, ImageSize, FileToWrite);
         fclose(FileToWrite);
 
         printf("ImageClient::WriteImage() - Image written\n");
@@ -119,4 +120,67 @@ int ImageClient::ReceiveImage()
 
         return RetVal;
 }
-////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+int ImageClient::SendPacketAmnt()
+{
+        int RetVal;
+        if((RetVal = send(LocalSocket, &PacketsToSend, sizeof(PacketsToSend),
+                                        0)) == -1)
+        {
+                printf("ImageClient::SendPacketAmnt() - Error could not send"
+                                " Packet Amount \n");
+                exit(-1);
+        } 
+        else
+        {
+                printf("ImageClient::SendPacketAmnt() - Send packet amount:"
+                               " %i \n", PacketsToSend);
+        }
+
+        return RetVal;
+}
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+void ImageClient::SendCycle()
+{
+        int Cycles     = 0;
+        int ImageIndex = 0;
+        int RetVal     = 0;
+        PacketsToSend  = ImageSize/MaxSize;
+
+        //First Send Packet Amount
+        SendPacketAmnt();
+        while(Cycles < PacketsToSend)
+        {
+                ImageIndex = MaxSize * Cycles;
+                memset(&SendBuffer, 0,  MaxSize); 
+                for(int IndexNo = 0; IndexNo < MaxSize; IndexNo++)
+                {
+                        SendBuffer[IndexNo] = ImageBuffer[ImageIndex];
+                        ImageIndex++; 
+                }
+                printf("ImageClient::SendCycle() - Sending PacketNo: %i \n",
+                                Cycles+1);
+
+                if((RetVal = send(LocalSocket, &SendBuffer, MaxSize, 0)) == -1)
+                {
+                        printf("ImageClient::SendCycle() - Failed to send "
+                                        "PacketNo: %i \n", Cycles + 1);
+                        exit(-1);
+                }
+                else
+                {
+                        printf("ImageClient::SendCycle() -" 
+                                      "  Sent PacketNo: %i \n", Cycles+1);
+                        printf("ImageClient::SendCycle() - " 
+                                        "Packets left: %i \n", 
+                                        (PacketsToSend - (Cycles+1)));
+                        Cycles++;
+                }
+        }
+        
+}
+///////////////////////////////////////////////////////////////////////////////

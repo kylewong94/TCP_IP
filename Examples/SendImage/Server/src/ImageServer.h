@@ -9,7 +9,7 @@ class ImageServer : public Server
 
                 unsigned char * ImageBuffer;
                 unsigned char   ReceiveBuffer[MaxSize];
-                uint8_t         PacketsToSend; 
+                int             PacketsToSend; 
                 uint32_t        ImageSize;
                 
 	public:

@@ -60,8 +60,8 @@ void ImageServer::Receive()
         //will need to stitch together an image
         //Will need to check if size received was 4 bytes (integer)
         uint8_t RetVal;
-        memset(ReceiveBuffer, 0, MaxSize); 
-        if((RetVal = recv(ClientSocket, ReceiveBuffer, sizeof(int), 0)) == -1)
+        if((RetVal = recv(ClientSocket, &PacketsToSend, sizeof(PacketsToSend),
+                                        0)) == -1)
         {
                 printf("ImageServer::Receive() - Error could not" 
                                 "receive bytes \n");
@@ -69,10 +69,10 @@ void ImageServer::Receive()
         }     
         else
         {
-                printf("ImageServer::Receive() -" 
-                                "Amount of cycles needed %i \n", RetVal);
-                PacketsToSend = RetVal;
+                printf("ImageServer::Receive() - " 
+                                "Amount of cycles needed %i \n", PacketsToSend);
         }
+
         ImageSize = MaxSize * PacketsToSend;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,12 +85,12 @@ void ImageServer::WriteImage()
 
         if((FileToWrite = fopen("SentImage_1.jpeg", "w")) == NULL)
         {
-                printf("ImageClient::WriteImage() - Failed to create file\n");
+                printf("ImageServer::WriteImage() - Failed to create file\n");
                 exit(-1);
         }
         else
         {
-                printf("ImageClient::WriteImage() - File created\n");
+                printf("ImageServer::WriteImage() - File created\n");
         }
 
         fwrite(ImageBuffer, 1, ImageSize, FileToWrite);
@@ -106,13 +106,13 @@ void ImageServer::ReadImage(char * ImageName)
         FILE * ptImageFile = NULL; 
         if((ptImageFile = fopen(ImageName, "r")) == NULL)
         {
-                printf("ImageClient::ReadImage() -  Failed to open file: %s\n",
+                printf("ImageServer::ReadImage() -  Failed to open file: %s\n",
                         ImageName);
                 exit(-1);
         }
         else
         {
-                printf("ImageClient::ReadImage() - File exists \n");
+                printf("ImageServer::ReadImage() - File exists \n");
         }
         fseek(ptImageFile, 0, SEEK_END);
         ImageSize = ftell(ptImageFile);
@@ -124,13 +124,13 @@ void ImageServer::ReadImage(char * ImageName)
         int Err;
         if((Err = fread(ImageBuffer, ImageSize, sizeof(char), ptImageFile)) < 1)
         {
-                printf("ImageClient::ReadImage() Failed to "
+                printf("ImageServer::ReadImage() - Failed to "
                                 "read image to buffer\n"); 
                 exit(-1);
         }
         else
         {
-                printf("ImageClient::ReadImage() Read image to buffer: %i\n",
+                printf("ImageServer::ReadImage() - Read image to buffer: %i\n",
                         ImageSize); 
         } 
         fclose(ptImageFile);
@@ -148,8 +148,9 @@ void ImageServer::ReceiveCycle()
         // Fills PacketsToSend
         Receive();
         
-        int Cycles = 0;
+        int Cycles     = 0;
         int ImageIndex = 0;
+        int RetVal     = 0;
 
         ImageBuffer = new unsigned char [ImageSize];
 
@@ -159,11 +160,22 @@ void ImageServer::ReceiveCycle()
         {
                ImageIndex = MaxSize*Cycles;
                //Grab 4096 bytes from socket
-               ReceiveImage();
-               //Writing Buffer to ImageBuffer
-               for(int IndexNo = ImageIndex; IndexNo < MaxSize*(Cycles+1); IndexNo++)
+               if((RetVal = ReceiveImage() ) < 4000)
                {
-                       ImageBuffer[IndexNo] = ReceiveBuffer[IndexNo];
+                        printf("ImageServer::ReceiveCycle() - Error could not"
+                                        " receive PacketNo: %i \n", (Cycles+1));
+                        exit(-1);
+               }
+               else
+               {
+                        printf("ImageServer::ReceiveCycle() - Processing "
+                                        "PacketNo: %i \n", (Cycles+1));
+               }
+               //Writing Buffer to ImageBuffer
+               for(int IndexNo = 0; IndexNo < MaxSize; IndexNo++)
+               {
+                       ImageBuffer[ImageIndex] = ReceiveBuffer[IndexNo];
+                       ImageIndex++;
                } 
                //Increase cycle
                Cycles++;

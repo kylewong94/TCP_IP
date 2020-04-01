@@ -5,17 +5,23 @@
 class ImageClient : public Client
 {
 	private:
-                unsigned char * ImageBuffer;
-                uint32_t        ImageSize;
+                const static int MaxSize = 4096;
+                int      PacketsToSend;
+
+                unsigned char *  ImageBuffer;
+                unsigned char    SendBuffer[MaxSize];
+                uint32_t         ImageSize;
 	public:
                 ImageClient(char * INET4, char * PortNum);
                 ~ImageClient();
 
 
                 int  SendImage();
+                int  ReceiveImage();
+                int  SendPacketAmnt();
                 void ReadImage(char * ptImage);
                 void WriteImage();
-                int  ReceiveImage(); 
+                void SendCycle(); 
 };
 ///////////////////////////////////////////////////////////////////////
 
