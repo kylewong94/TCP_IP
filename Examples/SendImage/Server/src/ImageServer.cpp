@@ -160,10 +160,20 @@ void ImageServer::ReceiveCycle()
         {
                ImageIndex = MaxSize*Cycles;
                //Grab 4096 bytes from socket
+               while((RetVal = ReceiveImage()) < 4000)
+               {
+                        printf("ImageServer::ReceiveCycle() - Error could not"
+                                        " receive PacketNo: %i \n", (Cycles+1));
+                        printf("ImageServer::ReceiveCycle() - Total bytes "
+                                        "received: %i \n", RetVal);
+               }
+               #if 0
                if((RetVal = ReceiveImage() ) < 4000)
                {
                         printf("ImageServer::ReceiveCycle() - Error could not"
                                         " receive PacketNo: %i \n", (Cycles+1));
+                        printf("ImageServer::ReceiveCycle() - Total bytes "
+                                        "received: %i \n", RetVal);
                         exit(-1);
                }
                else
@@ -171,6 +181,7 @@ void ImageServer::ReceiveCycle()
                         printf("ImageServer::ReceiveCycle() - Processing "
                                         "PacketNo: %i \n", (Cycles+1));
                }
+               #endif
                //Writing Buffer to ImageBuffer
                for(int IndexNo = 0; IndexNo < MaxSize; IndexNo++)
                {
