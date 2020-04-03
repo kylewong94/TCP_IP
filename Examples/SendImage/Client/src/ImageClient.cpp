@@ -166,7 +166,7 @@ void ImageClient::SendCycle()
                                 Cycles+1);
 
                 while((RetVal = send(LocalSocket, &SendBuffer, MaxSize, 
-                                                0)) < 4000)
+                                                0)) < MaxSize)
                 {
                         printf("ImageClient::SendCycle() - Failed to send "
                                         "PacketNo: %i \n", Cycles + 1);
@@ -190,6 +190,8 @@ void ImageClient::SendCycle()
                 #endif
                         printf("ImageClient::SendCycle() -" 
                                       "  Sent PacketNo: %i \n", Cycles+1);
+                        printf("Imageclient::SendCycle() -"
+                                        " Sent: %i Bytes \n", RetVal);
                         printf("ImageClient::SendCycle() - " 
                                         "Packets left: %i \n", 
                                         (PacketsToSend - (Cycles+1)));

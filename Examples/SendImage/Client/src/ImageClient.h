@@ -5,7 +5,7 @@
 class ImageClient : public Client
 {
 	private:
-                const static int MaxSize = 4096;
+                const static int MaxSize = 512;
                 int      PacketsToSend;
 
                 unsigned char *  ImageBuffer;

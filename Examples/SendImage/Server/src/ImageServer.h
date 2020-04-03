@@ -5,7 +5,7 @@
 class ImageServer : public Server
 {
 	private:
-                const static uint16_t MaxSize = 4096; //Maximum size able to communicate through socket
+                const static uint16_t MaxSize = 512; //Maximum size able to communicate through socket
 
                 unsigned char * ImageBuffer;
                 unsigned char   ReceiveBuffer[MaxSize];

@@ -21,7 +21,7 @@ ImageServer::~ImageServer()
 ////////////////////////////////////////////////////////////////////////////////
 int ImageServer::ReceiveImage()
 {
-        printf("Receiving Image . . .");
+        printf("Receiving Image . . .\n");
         int RetVal;
         //int ImageSize = 160037;  
         
@@ -83,7 +83,7 @@ void ImageServer::WriteImage()
 {
         FILE * FileToWrite;
 
-        if((FileToWrite = fopen("SentImage_1.jpeg", "w")) == NULL)
+        if((FileToWrite = fopen("SentImage_1.jpg", "w")) == NULL)
         {
                 printf("ImageServer::WriteImage() - Failed to create file\n");
                 exit(-1);
@@ -96,7 +96,7 @@ void ImageServer::WriteImage()
         fwrite(ImageBuffer, 1, ImageSize, FileToWrite);
         fclose(FileToWrite);
 
-        printf("ImageClient::WriteImage() - Image written\n");
+        printf("ImageServer::WriteImage() - Image written\n");
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -151,21 +151,23 @@ void ImageServer::ReceiveCycle()
         int Cycles     = 0;
         int ImageIndex = 0;
         int RetVal     = 0;
-
+        int RetrySend  = 0;
         ImageBuffer = new unsigned char [ImageSize];
 
         printf("ImageServer::ReceiveCycle() - Total Packets needed to "
                         "process: %i \n", PacketsToSend);
         while(Cycles < PacketsToSend)
         {
+               RetrySend = 0;
                ImageIndex = MaxSize*Cycles;
                //Grab 4096 bytes from socket
-               while((RetVal = ReceiveImage()) < 4000)
+               while(((RetVal = ReceiveImage()) < MaxSize) && (RetrySend < 4))
                {
                         printf("ImageServer::ReceiveCycle() - Error could not"
                                         " receive PacketNo: %i \n", (Cycles+1));
                         printf("ImageServer::ReceiveCycle() - Total bytes "
                                         "received: %i \n", RetVal);
+                        RetrySend++;
                }
                #if 0
                if((RetVal = ReceiveImage() ) < 4000)
@@ -183,6 +185,8 @@ void ImageServer::ReceiveCycle()
                }
                #endif
                //Writing Buffer to ImageBuffer
+               printf("ImageServer::ReceiveCycle() - Processing "
+                                    "PacketNo: %i \n", (Cycles+1));
                for(int IndexNo = 0; IndexNo < MaxSize; IndexNo++)
                {
                        ImageBuffer[ImageIndex] = ReceiveBuffer[IndexNo];
